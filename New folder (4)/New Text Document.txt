@@ -1,0 +1,119 @@
+import javax.swing.*;
+import java.awt.*;
+public class BresenhamAllSlopes extends JPanel {
+
+public void paint(Graphics g) {
+ drawBresenhamLine(g, 50, 50, 200, 100);
+ drawBresenhamLine(g, 50, 50, 100, 200);
+ drawBresenhamLine(g, 200, 200, 50, 150);
+ drawBresenhamLine(g, 200, 200, 150, 50);
+ }
+ public void drawBresenhamLine(Graphics g, int x1, int y1, int x2, int y2) {
+ int dx = Math.abs(x2 - x1);
+ int dy = Math.abs(y2 - y1);
+ int sx = (x2 > x1) ? 1 : -1;
+ int sy = (y2 > y1) ? 1 : -1;
+ if (dx >= dy) {
+ int d = 2 * dy - dx;
+ int y = y1;
+ for (int x = x1; x != x2; x += sx) {
+ g.fillRect(x, y, 2, 2);
+ if (d > 0) {
+ y += sy;
+ d -= 2 * dx;
+ }
+ d += 2 * dy;
+ }
+ } else {
+ int d = 2 * dx - dy;
+ int x = x1;
+ for (int y = y1; y != y2; y += sy) {
+ g.fillRect(x, y, 2, 2);
+ if (d > 0) {
+ x += sx;
+ d -= 2 * dy;
+ }
+ d += 2 * dx;
+ }
+ }
+ }
+ public static void main(String[] args) {
+ JFrame frame = new JFrame("Bresenham Line Drawing for All Slopes");
+ BresenhamAllSlopes panel = new BresenhamAllSlopes();
+ frame.add(panel);
+ frame.setSize(400, 4
+
+
+ //Mid point
+ private void drawCircle(Graphics g, int xc, int yc, int r) {
+ int x = 0, y = r;
+ int p = 1 - r; // Initial decision parameter
+ plotPoints(g, xc, yc, x, y);
+ while (x < y) {
+ x++;
+ if (p < 0) {
+ p += 2 * x + 1;
+ } else {
+ y--;
+ p += 2 * (x - y) + 1;
+ }
+ plotPoints(g, xc, yc, x, y);
+ }
+ }
+ private void plotPoints(Graphics g, int xc, int yc, int x, int y) {
+ g.fillRect(xc + x, yc + y, 2, 2);
+ g.fillRect(xc - x, yc + y, 2, 2);
+ g.fillRect(xc + x, yc - y, 2, 2);
+ g.fillRect(xc - x, yc - y, 2, 2);
+ g.fillRect(xc + y, yc + x, 2, 2);
+ g.fillRect(xc - y, yc + x, 2, 2);
+ g.fillRect(xc + y, yc - x, 2, 2);
+ g.fillRect(xc - y, yc - x,2,2);
+
+ //Bresenham circle___________
+ import javax.swing.*;
+import java.awt.*;
+public class BresenhamCircle extends JPanel {
+
+public void paint(Graphics g) {
+
+ drawBresenhamCircle(g, 200, 200, 100);
+
+
+ }
+ private void drawBresenhamCircle(Graphics g, int xc, int yc, int r)
+{
+ int x = 0, y = r;
+ int d = 3 - 2 * r; // Initial decision parameter
+ plotPoints(g, xc, yc, x, y);
+ while (y >= x) {
+ x++;
+ if (d > 0) {
+ y--;
+ d = d + 4 * (x - y) + 10;
+ } else {
+ d = d + 4 * x + 6;
+ }
+ plotPoints(g, xc, yc, x, y);
+ }
+ }
+ private void plotPoints(Graphics g, int xc, int yc, int x, int y) {
+ g.fillRect(xc + x, yc + y, 2, 2);
+ g.fillRect(xc - x, yc + y, 2, 2);
+ g.fillRect(xc + x, yc - y, 2, 2);
+ g.fillRect(xc - x, yc - y, 2, 2);
+ g.fillRect(xc + y, yc + x, 2, 2);
+ g.fillRect(xc - y, yc + x, 2, 2);
+ g.fillRect(xc + y, yc - x, 2, 2);
+ g.fillRect(xc - y, yc - x, 2, 2);
+ }
+ public static void main(String[] args) {
+
+ JFrame frame = new JFrame("Bresenham Circle Algorithm");
+ frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+ frame.setSize(500, 500);
+ BresenhamCircle panel = new BresenhamCircle();
+ frame.add(panel);
+ frame.setVisible(true);
+ }
+ }
