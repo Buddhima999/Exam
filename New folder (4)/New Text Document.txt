@@ -117,3 +117,199 @@ public void paint(Graphics g) {
  frame.setVisible(true);
  }
  }
+//Translation
+package chanux;
+import java.awt.*;
+import javax.swing.*;
+
+public class Translate extends JPanel {
+	public void paint(Graphics g) {
+		super.paintComponent(g);
+		
+		//ddaLine(g,100,100,250,200);
+		int[] x = {20,200,200,20};
+		int[] y = {200,200,50,50};
+		
+		g.setColor(Color.yellow);
+		ddaLine(g,x[0],y[0],x[1],y[1]);
+		ddaLine(g,x[1],y[1],x[2],y[2]);
+		ddaLine(g,x[2],y[2],x[3],y[3]);
+		ddaLine(g,x[3],y[3],x[0],y[0]);
+		
+		
+		
+		translate(x,y,250,250);
+		
+		g.setColor(Color.red);
+		ddaLine(g,x[0],y[0],x[1],y[1]);
+		ddaLine(g,x[1],y[1],x[2],y[2]);
+		ddaLine(g,x[2],y[2],x[3],y[3]);
+		ddaLine(g,x[3],y[3],x[0],y[0]);
+	}
+	
+	public void ddaLine(Graphics g,int x1,int y1,int x2,int y2) {
+		int dx = x2 -x1;
+		int dy = y2 -y1;
+		
+		int steps = Math.max(Math.abs(dx), Math.abs(dy));
+		
+		float x_inc = (float) dx /steps;
+		float y_inc = (float) dy/steps;
+		
+		float x = x1;
+		float y = y1;
+		
+		for(int i=0;i<=steps;i++) {
+			g.fillRect(Math.round(x), Math.round(y), 2, 2);
+			x += x_inc;
+			y +=y_inc;
+		}
+	}
+	public void translate(int x[],int y[], int tx,int ty ) {
+		for(int i=0;i<x.length;i++) {
+			 x[i] += tx;
+			 y[i] +=ty;
+		}
+	}
+  public static void main(String[] args) {
+	  JFrame frame = new JFrame("Translate");
+	  Translate panel = new Translate();
+	  frame.add(panel);
+	  frame.setSize(600,600);
+	  frame.setVisible(true);
+	  frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+  }
+}
+
+//Scale
+package chanux;
+import java.awt.*;
+import javax.swing.*;
+
+public class Scaling1 extends JPanel {
+	public void paint(Graphics g) {
+		super.paintComponent(g);
+		
+		int[] x = {20,240,240,20};
+		int[] y = {250,250,100,100};
+		
+		g.setColor(Color.BLUE);
+		rectangle(g,x,y);
+		
+		float sx =1.5f;
+		float sy= 0.5f;
+		
+		scale(x,y,sx,sy);
+		g.setColor(Color.RED);
+		rectangle(g,x,y);
+
+	}
+	
+	public void rectangle(Graphics g,int[]x,int[]y) {
+		drawLine(g,x[0],y[0],x[1],y[1]);
+		drawLine(g,x[1],y[1],x[2],y[2]);
+		drawLine(g,x[2],y[2],x[3],y[3]);
+		drawLine(g,x[3],y[3],x[0],y[0]);
+	}
+	
+	public void drawLine(Graphics g,int x1,int y1,int x2,int y2) {
+		int dx = x2 -x1;
+		int dy = y2 -y1;
+		
+		int steps = Math.max(Math.abs(dx), Math.abs(dy));
+		
+		float x_inc = (float) dx/steps;
+		float y_inc = (float) dy/steps;
+		
+		float x =x1;
+		float y = y1;
+		
+		for(int i=0;i<steps;i++) {
+			g.fillRect(Math.round(x), Math.round(y), 2, 2);
+			x +=x_inc;
+			y +=y_inc;
+		}
+		
+	}
+	
+	public void scale(int[] x,int[] y,float sx,float sy) {
+		for(int i=0;i<x.length;i++) {
+			x[i] += Math.round(x[i]*sx);
+			y[i] += Math.round(y[i]*sy);
+		}
+	}
+  public static void main(String[] args) {
+	  JFrame frame = new JFrame("Scale");
+	  Scaling1 panel = new Scaling1();
+	  
+	  frame.add(panel);
+	  frame.setSize(600,600);
+	  frame.setVisible(true);
+	  frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+  }
+}
+//RoTate
+package chanux;
+import java.awt.*;
+import javax.swing.*;
+
+public class Rotate extends JPanel {
+	public void paint(Graphics g) {
+		super.paintComponent(g);
+		
+		int[] x = {200,500,500,200};
+		int[] y = {200,200,100,100};
+		g.setColor(Color.GREEN);
+		rectangle(g,x,y);
+		
+		double angle = Math.toRadians(60);
+		rotate(x,y,angle);
+		g.setColor(Color.RED);
+		rectangle(g,x,y);
+		
+	}
+	
+	public void rectangle(Graphics g,int[] x,int[] y) {
+		drawLine(g,x[0],y[0],x[1],y[1]);
+		drawLine(g,x[1],y[1],x[2],y[2]);
+		drawLine(g,x[2],y[2],x[3],y[3]);
+		drawLine(g,x[3],y[3],x[0],y[0]);
+		
+	}
+	
+	public void drawLine(Graphics g,int x1,int y1,int x2,int y2) {
+		int dx = x2 -x1;
+		int dy = y2 - y1;
+		
+		int steps = Math.max(Math.abs(dx), Math.abs(dy));
+		
+		float x_inc = (float) dx/steps;
+		float y_inc = (float) dy/steps;
+		
+		float x =x1;
+		float y =y1;
+		
+		for(int i=0;i<=steps;i++) {
+			g.fillRect(Math.round(x), Math.round(y), 2, 2);
+			x +=x_inc;
+			y +=y_inc;
+		}
+	}
+	public void rotate(int[] x,int[] y,double angle) {
+		for(int i=0;i<x.length;i++) {
+			int oldX = x[i];
+			int oldY = y[i];
+			
+			x[i] = Math.round((float)(oldX * Math.cos(angle) - oldY* Math.sin(angle)));
+			y[i] = Math.round((float)(oldX * Math.sin(angle) + oldY * Math.cos(angle)));
+		}
+	}
+  public static void main(String[] args) {
+	  JFrame frame = new JFrame("Rotate");
+	  Rotate panel = new Rotate();
+	  frame.add(panel);
+	  frame.setSize(600,600);
+	  frame.setVisible(true);
+	  frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+  }
+}
