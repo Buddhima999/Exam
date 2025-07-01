@@ -313,3 +313,123 @@ public class Rotate extends JPanel {
 	  frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
 }
+//house
+
+
+
+
+import javax.swing.*;
+import java.awt.*;
+
+public class HouseTransform extends JPanel {
+
+  
+  int[] baseX = {-100, 100, 100, -100, -100};
+  int[] baseY = {100, 100, 300, 300, 100};
+
+  int[] roofX = {-100, 0, 100, -100};
+  int[] roofY = {100, 0, 100, 100};
+
+  int[] doorX = {-30, 30, 30, -30, -30};
+  int[] doorY = {300, 300, 220, 220, 300};
+
+  int[][] partsX = { baseX, roofX, doorX };
+  int[][] partsY = { baseY, roofY, doorY };
+
+ 
+
+  @Override
+  public void paintComponent(Graphics g) {
+      super.paintComponent(g);
+      setBackground(Color.WHITE);
+
+      int cx = getWidth() / 2;
+      int cy = getHeight() / 2;
+      
+
+      Object[][] transforms = {
+          { 0.0,     0.0, -250.0, Color.RED },
+          { 90.0,   250.0,  0.0,  Color.GREEN },
+          {180.0,     0.0, 250.0, Color.YELLOW },
+          {270.0,  -250.0,  0.0,  Color.MAGENTA }
+      };
+
+      for (Object[] t : transforms) {
+          double angle = (double) t[0];
+          double tx = (double) t[1];
+          double ty = (double) t[2];
+          Color color = (Color) t[3];
+
+          g.setColor(color);
+          drawHouse(g, angle, 0.6f, tx, ty, cx, cy);
+      }
+  }
+
+ 
+  void drawHouse(Graphics g, double angleDeg, float scaleFactor, double tx, double ty, int cx, int cy) {
+      for (int i = 0; i < partsX.length; i++) {
+          int[] x = partsX[i].clone();
+          int[] y = partsY[i].clone();
+
+         
+          scale(x, y, scaleFactor, scaleFactor);
+
+      
+          rotate(x, y, Math.toRadians(angleDeg));
+
+         
+          for (int j = 0; j < x.length - 1; j++) {
+              int x1 = Math.round(x[j] + (float) tx + cx);
+              int y1 = Math.round(y[j] + (float) ty + cy);
+              int x2 = Math.round(x[j + 1] + (float) tx + cx);
+              int y2 = Math.round(y[j + 1] + (float) ty + cy);
+
+              drawLineDDA(g, x1, y1, x2, y2);
+          }
+      }
+  }
+
+
+  public void scale(int[] x, int[] y, float sx, float sy) {
+      for (int i = 0; i < x.length; i++) {
+          x[i] = Math.round(x[i] * sx);
+          y[i] = Math.round(y[i] * sy);
+      }
+  }
+ 
+
+  public void rotate(int[] x, int[] y, double angle) {
+      for (int i = 0; i < x.length; i++) {
+          int tempX = x[i];
+          int tempY = y[i];
+          x[i] = Math.round((float) (tempX * Math.cos(angle) - tempY * Math.sin(angle)));
+          y[i] = Math.round((float) (tempX * Math.sin(angle) + tempY * Math.cos(angle)));
+      }
+  }
+
+ 
+  void drawLineDDA(Graphics g, int x1, int y1, int x2, int y2) {
+      int dx = x2 - x1;
+      int dy = y2 - y1;
+
+      int steps = Math.max(Math.abs(dx), Math.abs(dy));
+      float xInc = dx / (float) steps;
+      float yInc = dy / (float) steps;
+
+      float x = x1;
+      float y = y1;
+
+      for (int i = 0; i <= steps; i++) {
+          g.drawRect(Math.round(x), Math.round(y), 1, 1);
+          x += xInc;
+          y += yInc;
+      }
+  }
+  public static void main(String[] args) {
+      JFrame frame = new JFrame("House");
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      frame.setSize(800, 800);
+      frame.add(new HouseTransform());
+      frame.setVisible(true);
+  }
+}
